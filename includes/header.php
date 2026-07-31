@@ -34,4 +34,7 @@
     <link rel="stylesheet" href="<?= BASE_URL; ?>assets/css/style.css">
 </head>
 <body>
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div id="sidebar-overlay"></div>
+    
     <div class="d-flex" id="wrapper">

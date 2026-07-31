@@ -432,13 +432,178 @@ body {
     border-radius: 8px;
 }
 
-/* Responsive behavior for mobile */
+/* ---------------------------------------------------
+   MOBILE BACKDROP OVERLAY & FLOATING BACK TO TOP
+--------------------------------------------------- */
+#sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#backToTop {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+    border: none;
+}
+
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+#backToTop:hover {
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.5);
+}
+
+#backToTop:active {
+    transform: scale(0.95);
+}
+
+/* ---------------------------------------------------
+   TOUCH SCROLLBAR FOR TABLES ON MOBILE
+--------------------------------------------------- */
+.table-responsive {
+    border-radius: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ---------------------------------------------------
+   INTERACTIVE INPUT TOGGLE & TOUCH TARGETS
+--------------------------------------------------- */
+.input-group-text.toggle-password {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.input-group-text.toggle-password:hover {
+    color: var(--blue-600);
+}
+
+.navbar-toggler-btn {
+    min-width: 42px;
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn:active, .card-custom:active {
+    transform: scale(0.98);
+}
+
+/* ---------------------------------------------------
+   RESPONSIVE BREAKPOINTS (MOBILE & TABLET)
+--------------------------------------------------- */
 @media (max-width: 991.98px) {
     #sidebar-wrapper {
-        margin-left: -275px;
         position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        margin-left: -285px;
+        width: 280px;
+        z-index: 1000;
+        box-shadow: 8px 0 30px rgba(0, 0, 0, 0.25);
     }
+
     #sidebar-wrapper.toggled {
         margin-left: 0;
     }
+
+    #page-content-wrapper {
+        min-width: 100vw;
+    }
+
+    main.container-fluid {
+        padding: 1rem !important;
+    }
+
+    .navbar-custom {
+        padding: 0.75rem 1rem;
+    }
 }
+
+@media (max-width: 576px) {
+    .stat-card {
+        padding: 1.1rem 1.1rem 1.1rem 1.4rem !important;
+    }
+
+    .stat-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        font-size: 1.25rem;
+    }
+
+    .hero-banner-sma h4 {
+        font-size: 1.2rem !important;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.88rem;
+    }
+
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        text-align: left !important;
+        margin-bottom: 0.6rem;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        justify-content: center !important;
+        display: flex;
+        margin-top: 0.75rem;
+    }
+
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+}
+

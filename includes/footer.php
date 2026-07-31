@@ -15,6 +15,11 @@
     </div> <!-- End Page Content Wrapper -->
 </div> <!-- End #wrapper -->
 
+<!-- Floating Back to Top Button for Mobile & Desktop -->
+<button id="backToTop" class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center" aria-label="Kembali ke Atas" title="Kembali ke atas">
+    <i class="bi bi-arrow-up-short fs-3"></i>
+</button>
+
 <!-- jQuery 3.7.1 -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 

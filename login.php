@@ -208,6 +208,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                     <input type="password" name="password" id="password" class="form-control py-2" placeholder="Masukkan password">
+                    <span class="input-group-text toggle-password" onclick="togglePasswordVisibility('password', 'toggleIcon')" title="Lihat/Sembunyikan Password">
+                        <i class="bi bi-eye-fill" id="toggleIcon"></i>
+                    </span>
                 </div>
             </div>
 
@@ -225,6 +228,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+function togglePasswordVisibility(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon  = document.getElementById(iconId);
+    if (input && icon) {
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye-fill", "bi-eye");
+            icon.classList.add("bi-eye-slash-fill");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash-fill");
+            icon.classList.add("bi-eye-fill");
+        }
+    }
+}
+
 <?php if (!empty($error_message)): ?>
     Swal.fire({
         icon: 'error',

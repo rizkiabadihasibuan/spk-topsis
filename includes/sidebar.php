@@ -10,14 +10,20 @@ $currentPage = $page ?? 'dashboard';
 <!-- Sidebar Wrapper -->
 <div id="sidebar-wrapper">
     <!-- Brand / Logo Header SMA -->
-    <div class="sidebar-heading d-flex align-items-center">
-        <div class="brand-logo me-3 shadow-sm">
-            <i class="bi bi-mortarboard-fill"></i>
+    <div class="sidebar-heading d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <div class="brand-logo me-3 shadow-sm">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <div>
+                <h6 class="fw-bold text-white mb-0" style="letter-spacing: 0.3px; font-size: 0.95rem;">BK SMA TOPSIS</h6>
+                <span class="badge bg-warning text-dark fw-bold px-2 py-0" style="font-size: 0.65rem;">Penentuan Jurusan Kuliah</span>
+            </div>
         </div>
-        <div>
-            <h6 class="fw-bold text-white mb-0" style="letter-spacing: 0.3px; font-size: 0.95rem;">BK SMA TOPSIS</h6>
-            <span class="badge bg-warning text-dark fw-bold px-2 py-0" style="font-size: 0.65rem;">Penentuan Jurusan Kuliah</span>
-        </div>
+        <!-- Close button for mobile -->
+        <button id="sidebar-close-btn" class="btn text-white-50 p-1 d-lg-none border-0" aria-label="Tutup Menu">
+            <i class="bi bi-x-lg fs-5"></i>
+        </button>
     </div>
 
     <!-- Navigation Menu List -->

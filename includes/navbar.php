@@ -9,14 +9,22 @@ $currentUserNama = $_SESSION['nama'] ?? 'Guru BK / Admin';
 $currentUserRole = $_SESSION['role'] ?? 'admin';
 ?>
 <!-- Top Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-custom w-100">
+<nav class="navbar navbar-expand-lg navbar-custom w-100 sticky-top">
     <div class="container-fluid">
         <!-- Sidebar Toggle Button & Brand Title -->
         <div class="d-flex align-items-center">
-            <button class="navbar-toggler-btn me-3" id="menu-toggle" type="button" title="Toggle Navigasi">
-                <i class="bi bi-list fs-5"></i>
+            <button class="navbar-toggler-btn me-2 me-md-3" id="menu-toggle" type="button" aria-label="Toggle Navigasi Menu" title="Toggle Navigasi">
+                <i class="bi bi-list fs-4"></i>
             </button>
             
+            <!-- Mobile Brand Title (Visible on Mobile) -->
+            <div class="d-flex d-md-none align-items-center">
+                <h6 class="fw-bold mb-0 text-dark d-flex align-items-center gap-1" style="font-size: 0.95rem;">
+                    <i class="bi bi-mortarboard-fill text-warning me-1"></i> SPK TOPSIS BK
+                </h6>
+            </div>
+
+            <!-- Desktop Brand Title -->
             <div class="d-none d-md-flex align-items-center">
                 <div class="me-3 p-2 bg-primary-subtle rounded-3 text-primary">
                     <i class="bi bi-building-fill fs-5"></i>
