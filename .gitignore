@@ -1,0 +1,19 @@
+# Temporary files
+*.log
+tmp/
+temp/
+.cache/
+
+# OS specific files
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vendor / Local environment
+.env
