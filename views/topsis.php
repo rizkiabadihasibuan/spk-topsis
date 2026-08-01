@@ -825,7 +825,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'proses_hitung_simpan_topsis
                     <table class="table table-bordered align-middle small mb-0">
                         <thead class="table-dark">
                             <tr>
-                                <th class="text-center" style="width: 10%;">Ranking</th>
+                                <th class="text-center text-nowrap" style="min-width: 100px;">Ranking</th>
                                 <th>Kode</th>
                                 <th>Nama Alternatif Jurusan</th>
                                 <th class="text-end">Nilai Preferensi ($V$)</th>
@@ -835,13 +835,15 @@ if (isset($_POST['action']) && $_POST['action'] === 'proses_hitung_simpan_topsis
                         <tbody>
                             <?php foreach ($ranking_list as $rank => $item): $r = $rank + 1; ?>
                                 <tr>
-                                    <td class="text-center fw-bold fs-6">
+                                    <td class="text-center text-nowrap">
                                         <?php if ($r === 1): ?>
-                                            <span class="badge bg-warning text-dark"><i class="bi bi-trophy-fill me-1"></i>1</span>
+                                            <span class="rank-badge-1"><i class="bi bi-trophy-fill me-1"></i>#1</span>
                                         <?php elseif ($r === 2): ?>
-                                            <span class="badge bg-secondary"><i class="bi bi-award-fill me-1"></i>2</span>
+                                            <span class="rank-badge-2"><i class="bi bi-award-fill me-1"></i>#2</span>
+                                        <?php elseif ($r === 3): ?>
+                                            <span class="rank-badge-3"><i class="bi bi-star-fill me-1"></i>#3</span>
                                         <?php else: ?>
-                                            <span><?= $r; ?></span>
+                                            <span class="rank-badge-other">#<?= $r; ?></span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="font-monospace fw-bold"><?= sanitize($item['kode_alternatif']); ?></td>

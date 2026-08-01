@@ -22,17 +22,23 @@ if (isset($_SESSION['swal_error'])) {
 $current_user_id = $_SESSION['user_id'] ?? 1;
 
 // ----------------------------------------------------
-// 1. QUERY MASTER DATA KRITERIA & ALTERNATIF
+// 1. QUERY MASTER DATA KRITERIA, ALTERNATIF & SUB-KRITERIA
 // ----------------------------------------------------
-$list_kriteria   = [];
-$list_alternatif = [];
-$total_kriteria  = 0;
+$list_kriteria    = [];
+$list_alternatif  = [];
+$sub_kriteria_map = [];
+$total_kriteria   = 0;
 
 if ($db !== null) {
     try {
         $list_kriteria   = $db->query("SELECT * FROM tb_kriteria ORDER BY id_kriteria ASC")->fetchAll();
         $list_alternatif = $db->query("SELECT * FROM tb_alternatif ORDER BY id_alternatif ASC")->fetchAll();
         $total_kriteria  = count($list_kriteria);
+
+        $subs = $db->query("SELECT * FROM tb_sub_kriteria ORDER BY id_kriteria ASC, nilai_bobot DESC")->fetchAll();
+        foreach ($subs as $s) {
+            $sub_kriteria_map[$s['id_kriteria']][] = $s;
+        }
     } catch (PDOException $e) {
         $swal_error = 'Gagal mengambil data master: ' . $e->getMessage();
     }
@@ -340,16 +346,36 @@ if ($db !== null && $total_kriteria > 0) {
                                                 </span>
                                             </td>
                                             <td class="fw-medium text-dark">
-                                                <?= sanitize($krit['nama_kriteria']); ?>
-                                                <small class="d-block text-muted" style="font-size: 0.75rem;">Bobot: <?= formatNumber($krit['bobot'], 4); ?></small>
+                                                <div><?= sanitize($krit['nama_kriteria']); ?></div>
+                                                <?php if (!empty($krit['keterangan'])): ?>
+                                                    <small class="d-block text-muted" style="font-size: 0.75rem;"><?= sanitize($krit['keterangan']); ?></small>
+                                                <?php endif; ?>
+                                                <small class="d-block text-primary fw-bold" style="font-size: 0.75rem;">Bobot: <?= formatNumber($krit['bobot'], 4); ?></small>
                                             </td>
                                             <td><?= getBadgeJenis($krit['jenis']); ?></td>
                                             <td>
-                                                <input type="number" step="any" min="0" max="100" 
+                                                <input type="number" step="any" min="0" 
                                                        name="nilai[<?= $id_k; ?>]" 
                                                        id="input_nilai_<?= $id_k; ?>" 
-                                                       class="form-control input-score-field" 
-                                                       placeholder="Contoh: 85" required>
+                                                       class="form-control input-score-field mb-1" 
+                                                       placeholder="Nilai Real / Rating" required>
+                                                <?php if (!empty($sub_kriteria_map[$id_k])): ?>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 py-1 text-start" style="font-size: 0.75rem;" type="button" data-bs-toggle="dropdown">
+                                                            <i class="bi bi-list-stars me-1"></i>Pilihan Rating
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="font-size: 0.8rem;">
+                                                            <?php foreach ($sub_kriteria_map[$id_k] as $subItem): ?>
+                                                                <li>
+                                                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#" onclick="document.getElementById('input_nilai_<?= $id_k; ?>').value='<?= $subItem['nilai_bobot']; ?>'; return false;">
+                                                                        <span><?= sanitize($subItem['nama_sub']); ?></span>
+                                                                        <span class="badge bg-primary ms-2"><?= $subItem['nilai_bobot']; ?></span>
+                                                                    </a>
+                                                                </li>
+                                                            <?php endforeach; ?>
+                                                        </ul>
+                                                    </div>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

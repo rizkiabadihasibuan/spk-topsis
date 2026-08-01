@@ -358,7 +358,7 @@ if ($is_data_complete && !$invalid_weights && !$invalid_types) {
             <table id="tableRanking" class="table table-hover table-striped align-middle border w-100" style="font-size: 0.9rem;">
                 <thead class="table-dark" style="background-color: #1e293b;">
                     <tr>
-                        <th class="text-center" style="width: 8%;">Ranking</th>
+                        <th class="text-center text-nowrap" style="min-width: 100px;">Ranking</th>
                         <th style="width: 12%;">Kode</th>
                         <th style="width: 30%;">Nama Jurusan Kuliah</th>
                         <th class="text-end" style="width: 13%;">Jarak $D^+$</th>
@@ -370,7 +370,7 @@ if ($is_data_complete && !$invalid_weights && !$invalid_types) {
                 <tbody>
                     <?php foreach ($ranking_results as $row): $rank = $row['ranking']; ?>
                         <tr>
-                            <td class="text-center">
+                            <td class="text-center text-nowrap" data-order="<?= $rank; ?>">
                                 <?php if ($rank === 1): ?>
                                     <span class="rank-badge-1"><i class="bi bi-trophy-fill me-1"></i>#1</span>
                                 <?php elseif ($rank === 2): ?>
@@ -478,7 +478,10 @@ if ($is_data_complete && !$invalid_weights && !$invalid_types) {
                 url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json'
             },
             responsive: true,
-            order: [[0, 'asc']]
+            order: [[0, 'asc']],
+            columnDefs: [
+                { targets: 0, type: 'num' }
+            ]
         });
 
         const labels = <?= json_encode($chart_labels); ?>;

@@ -131,9 +131,22 @@ spk-topsis/
 
 ---
 
-## 📐 7. Algoritma Perhitungan TOPSIS
+## 📐 7. Skema Data & Algoritma Perhitungan TOPSIS
 
-Perhitungan TOPSIS pada modul [views/topsis.php](file:///c:/xampp/htdocs/spk-topsis/views/topsis.php) melalui 6 tahapan utama:
+### **Skema Penggabungan Data Real & Rating Kualitatif**:
+Aplikasi SPK TOPSIS ini secara ilmiah mendukung penggabungan 2 jenis data secara simultan:
+- 📊 **Data Real / Kuantitatif Asli (0-100)**: Digunakan untuk nilai akademis asli (seperti *C1: Nilai Rapor Akademik* dan *C2: Skor TPA*).
+- ⭐ **Data Rating Konversi (1-5)**: Digunakan untuk kriteria kualitatif atau berjenjang:
+  - **C3: Akreditasi Jurusan & Kampus**: `5` = Unggul / A, `4` = Baik Sekali / B, `3` = Baik / C, `2` = Cukup, `1` = Belum.
+  - **C4: Minat & Psikotes**: `5` = Sangat Berminat s.d `1` = Tidak Berminat.
+  - **C5: Estimasi Biaya UKT (Cost)**: `1` = < Rp 2Jt s.d `5` = > Rp 12Jt.
+  - **C6: Prospek Kerja**: `5` = Sangat Luas s.d `1` = Sangat Rendah.
+
+Seluruh perbedaan satuan dan skala angka tersebut otomatis disetarakan secara homogen pada **Tahap Normalisasi Vektor ($R$)** TOPSIS.
+
+---
+
+### **6 Tahapan Utama Algoritma TOPSIS**:
 
 1. **Matriks Keputusan ($X$)**:
    Pembentukan matriks ukuran $m \times n$ (alternatif $\times$ kriteria).

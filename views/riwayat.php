@@ -13,6 +13,7 @@ $swal_error   = '';
 // 1. HANDLER AJAX GET DETAIL RIWAYAT (JSON RESPONSE)
 // ----------------------------------------------------
 if (isset($_GET['action']) && $_GET['action'] === 'get_detail' && isset($_GET['id'])) {
+    if (ob_get_level() > 0) ob_clean();
     header('Content-Type: application/json');
     $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
 
@@ -473,18 +474,18 @@ if ($db !== null) {
 
     <!-- Table List Riwayat -->
     <div class="table-responsive">
-        <table id="tableRiwayat" class="table table-hover align-middle w-100 border">
+        <table id="tableRiwayat" class="table table-hover align-middle w-100 border text-nowrap" style="min-width: 1050px;">
             <thead>
                 <tr>
-                    <th class="text-center" style="width: 5%;">No</th>
-                    <th>Kode Perhitungan</th>
-                    <th>Tanggal & Waktu</th>
-                    <th class="text-center">Metode</th>
-                    <th class="text-center">Alternatif</th>
-                    <th class="text-center">Kriteria</th>
-                    <th>Alternatif Terbaik</th>
-                    <th class="text-center">Nilai Preferensi</th>
-                    <th class="text-center" style="width: 18%;">Aksi</th>
+                    <th class="text-center text-nowrap" style="width: 5%;">No</th>
+                    <th class="text-nowrap">Kode Perhitungan</th>
+                    <th class="text-nowrap">Tanggal & Waktu</th>
+                    <th class="text-center text-nowrap">Metode</th>
+                    <th class="text-center text-nowrap">Alternatif</th>
+                    <th class="text-center text-nowrap">Kriteria</th>
+                    <th class="text-nowrap">Alternatif Terbaik</th>
+                    <th class="text-center text-nowrap">Nilai Preferensi</th>
+                    <th class="text-center text-nowrap" style="width: 160px; min-width: 160px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -518,7 +519,7 @@ if ($db !== null) {
                             <td class="text-center fw-extrabold text-primary">
                                 <?= number_format((float)$r['nilai_preferensi_terbaik'], 6); ?>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center text-nowrap" style="width: 160px; min-width: 160px;">
                                 <div class="btn-group btn-group-sm" role="group">
                                     <!-- Lihat Detail Modal Button -->
                                     <button type="button" class="btn btn-outline-info fw-bold btn-view-detail" data-id="<?= $r['id']; ?>" title="Lihat Detail Snapshot">
@@ -613,7 +614,7 @@ if ($db !== null) {
                         <table class="table table-hover align-middle mb-0" id="tableDetailSnapshot">
                             <thead class="table-dark">
                                 <tr>
-                                    <th class="text-center" style="width: 8%;">Ranking</th>
+                                    <th class="text-center text-nowrap" style="min-width: 100px;">Ranking</th>
                                     <th style="width: 15%;">Kode Alternatif</th>
                                     <th>Nama Jurusan Kuliah</th>
                                     <th class="text-center">Jarak D+</th>
@@ -662,6 +663,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // 1. Inisialisasi DataTables
     if ($('#tableRiwayat').length > 0 && $('#tableRiwayat tbody tr').length > 0 && !$('#tableRiwayat tbody tr td[colspan]').length) {
         $('#tableRiwayat').DataTable({
+            autoWidth: false,
+            scrollX: true,
             language: {
                 search: "Pencarian:",
                 lengthMenu: "Tampilkan _MENU_ riwayat",
@@ -676,7 +679,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             },
             order: [[0, 'asc']],
-            pageLength: 10
+            pageLength: 10,
+            columnDefs: [
+                { orderable: false, targets: 8, width: "160px" }
+            ]
         });
     }
 
@@ -701,7 +707,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <?php endif; ?>
 
     // 3. Modal Handler Lihat Detail
-    $('.btn-view-detail').on('click', function () {
+    $(document).on('click', '.btn-view-detail', function () {
         const id = $(this).data('id');
         $('#loaderDetail').removeClass('d-none');
         $('#contentDetail').addClass('d-none');
@@ -729,9 +735,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     let tbodyHtml = '';
                     res.details.forEach(function (row) {
+                        const r = parseInt(row.ranking);
+                        let rankBadgeHtml = `<span class="rank-badge-other">#${r}</span>`;
+                        if (r === 1) {
+                            rankBadgeHtml = `<span class="rank-badge-1"><i class="bi bi-trophy-fill me-1"></i>#1</span>`;
+                        } else if (r === 2) {
+                            rankBadgeHtml = `<span class="rank-badge-2"><i class="bi bi-award-fill me-1"></i>#2</span>`;
+                        } else if (r === 3) {
+                            rankBadgeHtml = `<span class="rank-badge-3"><i class="bi bi-star-fill me-1"></i>#3</span>`;
+                        }
+
                         tbodyHtml += `
                             <tr>
-                                <td class="text-center fw-extrabold fs-6">${row.ranking}</td>
+                                <td class="text-center text-nowrap">${rankBadgeHtml}</td>
                                 <td class="fw-bold text-primary">${row.kode_alternatif}</td>
                                 <td class="fw-semibold text-dark">${row.nama_jurusan}</td>
                                 <td class="text-center text-muted font-monospace">${row.nilai_d_plus}</td>
@@ -746,11 +762,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     $('#loaderDetail').addClass('d-none');
                     $('#contentDetail').removeClass('d-none');
                 } else {
-                    Swal.fire('Gagal', res.message, 'error');
+                    Swal.fire('Gagal', res.message || 'Gagal memuat detail data.', 'error');
                     $('#modalDetailRiwayat').modal('hide');
                 }
             },
-            error: function () {
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error, xhr.responseText);
                 Swal.fire('Error', 'Gagal terhubung ke server untuk mengambil detail.', 'error');
                 $('#modalDetailRiwayat').modal('hide');
             }
@@ -758,7 +775,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 4. Print Single Detail Handler
-    $('.btn-print-single').on('click', function () {
+    $(document).on('click', '.btn-print-single', function () {
         const id = $(this).data('id');
         printSnapshotModal(id);
     });
@@ -772,7 +789,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 5. SweetAlert Hapus Riwayat
-    $('.btn-delete-riwayat').on('click', function () {
+    $(document).on('click', '.btn-delete-riwayat', function () {
         const id = $(this).data('id');
         const kode = $(this).data('kode');
 

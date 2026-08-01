@@ -23,9 +23,9 @@ if (isset($_SESSION['swal_error'])) {
 // 1. HANDLER PEMROSESAN TAMBAH DATA (POST)
 // ----------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'tambah') {
-    $kode_alternatif = strtoupper(sanitize($_POST['kode_alternatif'] ?? ''));
-    $nama_alternatif = sanitize($_POST['nama_alternatif'] ?? '');
-    $deskripsi       = sanitize($_POST['deskripsi'] ?? '');
+    $kode_alternatif = strtoupper(trim($_POST['kode_alternatif'] ?? ''));
+    $nama_alternatif = html_entity_decode(trim($_POST['nama_alternatif'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $deskripsi       = html_entity_decode(trim($_POST['deskripsi'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
     // Validasi Field Wajib
     if (empty($kode_alternatif)) {
@@ -63,9 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 // ----------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit') {
     $id_alternatif   = (int)($_POST['id_alternatif'] ?? 0);
-    $kode_alternatif = strtoupper(sanitize($_POST['kode_alternatif'] ?? ''));
-    $nama_alternatif = sanitize($_POST['nama_alternatif'] ?? '');
-    $deskripsi       = sanitize($_POST['deskripsi'] ?? '');
+    $kode_alternatif = strtoupper(trim($_POST['kode_alternatif'] ?? ''));
+    $nama_alternatif = html_entity_decode(trim($_POST['nama_alternatif'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $deskripsi       = html_entity_decode(trim($_POST['deskripsi'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
     // Validasi Field Wajib
     if ($id_alternatif <= 0) {

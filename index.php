@@ -34,7 +34,23 @@ $allowed_pages = [
     'blank'         => 'views/blank.php'
 ];
 
-// 5. Muat Header Template Global
+// 5. Bypass HTML Template Layout jika Request berupa AJAX / Direct Export / Download
+$is_ajax_action = (isset($_GET['action']) && in_array($_GET['action'], ['get_detail', 'export_excel'])) || isset($_GET['download']);
+if ($is_ajax_action) {
+    if (array_key_exists($page, $allowed_pages)) {
+        $view_file = __DIR__ . '/' . $allowed_pages[$page];
+        if (file_exists($view_file)) {
+            while (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+            ob_start();
+            require_once $view_file;
+            exit;
+        }
+    }
+}
+
+// 6. Muat Header Template Global
 require_once __DIR__ . '/includes/header.php';
 
 // 6. Muat Sidebar Template Global

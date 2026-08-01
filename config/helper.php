@@ -12,7 +12,15 @@
  * @return string
  */
 function sanitize($data) {
-    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+    if ($data === null || $data === '') return '';
+    if (!is_string($data)) return $data;
+    
+    // Decode recursive html entities to clean raw string first
+    $raw = $data;
+    while ($raw !== ($decoded = html_entity_decode($raw, ENT_QUOTES | ENT_HTML5, 'UTF-8'))) {
+        $raw = $decoded;
+    }
+    return htmlspecialchars(trim($raw), ENT_QUOTES, 'UTF-8');
 }
 
 /**

@@ -30,6 +30,9 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+    <!-- KaTeX Math Rendering CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= BASE_URL; ?>assets/css/style.css">
 </head>

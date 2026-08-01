@@ -146,18 +146,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
             border-bottom: 1px solid #f1f5f9;
         }
-        .brand-icon-box {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: #ffffff;
-            border-radius: 16px;
+        .brand-unit-wrapper {
+            position: relative;
             display: inline-flex;
             align-items: center;
+        }
+        .brand-icon-box {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1.25rem;
-            box-shadow: 0 8px 16px rgba(245, 158, 11, 0.35);
+            font-size: 2.2rem;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 8px 20px rgba(217, 119, 6, 0.4) !important;
+        }
+        .brand-pill-badge {
+            background: #ffb703;
+            color: #0f172a;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            padding: 0.55rem 1.25rem 0.55rem 1.8rem;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            margin-left: -16px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25);
+            white-space: nowrap;
         }
         .form-control:focus {
             border-color: #2563eb;
@@ -178,12 +199,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="login-card">
     <!-- Header Card Brand & Title -->
     <div class="login-header">
-        <div class="brand-icon-box">
-            <i class="bi bi-mortarboard-fill"></i>
+        <!-- Centered Connected Brand Badge Logo (Matching Mockup) -->
+        <div class="d-flex align-items-center justify-content-center mb-3">
+            <div class="brand-unit-wrapper">
+                <div class="brand-icon-box">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div class="brand-pill-badge">
+                    PORTAL BIMBINGAN KONSELING (BK) SMA
+                </div>
+            </div>
         </div>
-        <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2 rounded-pill" style="font-size: 0.75rem;">
-            PORTAL BIMBINGAN KONSELING (BK) SMA
-        </span>
         <h4 class="fw-bold text-dark mb-1" style="letter-spacing: -0.3px;"><?= APP_NAME; ?></h4>
         <p class="text-muted small mb-2">
             Penentuan Jurusan Kuliah Siswa SMA Menggunakan Metode <strong><?= APP_METHOD; ?></strong>

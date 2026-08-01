@@ -23,11 +23,11 @@ if (isset($_SESSION['swal_error'])) {
 // 1. HANDLER PEMROSESAN TAMBAH DATA (POST)
 // ----------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'tambah') {
-    $kode_kriteria = strtoupper(sanitize($_POST['kode_kriteria'] ?? ''));
-    $nama_kriteria = sanitize($_POST['nama_kriteria'] ?? '');
-    $bobot         = sanitize($_POST['bobot'] ?? '');
-    $jenis         = strtolower(sanitize($_POST['jenis'] ?? 'benefit'));
-    $keterangan    = sanitize($_POST['keterangan'] ?? '');
+    $kode_kriteria = strtoupper(trim($_POST['kode_kriteria'] ?? ''));
+    $nama_kriteria = html_entity_decode(trim($_POST['nama_kriteria'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $bobot         = trim($_POST['bobot'] ?? '');
+    $jenis         = strtolower(trim($_POST['jenis'] ?? 'benefit'));
+    $keterangan    = html_entity_decode(trim($_POST['keterangan'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
     // Validasi Field Wajib & Angka Bobot
     if (empty($kode_kriteria)) {
@@ -71,11 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 // ----------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit') {
     $id_kriteria   = (int)($_POST['id_kriteria'] ?? 0);
-    $kode_kriteria = strtoupper(sanitize($_POST['kode_kriteria'] ?? ''));
-    $nama_kriteria = sanitize($_POST['nama_kriteria'] ?? '');
-    $bobot         = sanitize($_POST['bobot'] ?? '');
-    $jenis         = strtolower(sanitize($_POST['jenis'] ?? 'benefit'));
-    $keterangan    = sanitize($_POST['keterangan'] ?? '');
+    $kode_kriteria = strtoupper(trim($_POST['kode_kriteria'] ?? ''));
+    $nama_kriteria = html_entity_decode(trim($_POST['nama_kriteria'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $bobot         = trim($_POST['bobot'] ?? '');
+    $jenis         = strtolower(trim($_POST['jenis'] ?? 'benefit'));
+    $keterangan    = html_entity_decode(trim($_POST['keterangan'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
     // Validasi Field Wajib
     if ($id_kriteria <= 0) {

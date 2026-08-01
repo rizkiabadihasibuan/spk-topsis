@@ -183,12 +183,39 @@ function initDatabaseTables($pdo) {
         $countKriteria = $pdo->query("SELECT COUNT(*) FROM `tb_kriteria`")->fetchColumn();
         if ($countKriteria == 0) {
             $pdo->exec("INSERT INTO `tb_kriteria` (`id_kriteria`, `kode_kriteria`, `nama_kriteria`, `bobot`, `jenis`, `keterangan`) VALUES
-                (1, 'C1', 'Nilai Rapor Matematika & Logika', 0.2500, 'benefit', 'Rata-rata nilai rapor Matematika & Logika (Semester 1-5)'),
-                (2, 'C2', 'Nilai Rapor Bahasa Inggris & Komunikasi', 0.2000, 'benefit', 'Rata-rata nilai rapor Bahasa Inggris & Bahasa Indonesia'),
-                (3, 'C3', 'Skor Tes Potensi Akademik (TPA)', 0.2000, 'benefit', 'Hasil pengujian kemampuan penalaran & akademik siswa'),
-                (4, 'C4', 'Minat & Psikotes Siswa', 0.1500, 'benefit', 'Skor asesmen kecenderungan minat jurusan & psikologi'),
-                (5, 'C5', 'Estimasi Biaya Kuliah / UKT', 0.1000, 'cost', 'Skala beban estimasi biaya kuliah per semester'),
-                (6, 'C6', 'Prospek & Serapan Kerja', 0.1000, 'benefit', 'Tingkat peluang & daya serap lulusan jurusan di dunia kerja')
+                (1, 'C1', 'Nilai Rapor Akademik', 0.2500, 'benefit', 'Rata-rata nilai rapor mata pelajaran utama (Data Real 0-100)'),
+                (2, 'C2', 'Skor Tes Potensi Akademik (TPA)', 0.2000, 'benefit', 'Hasil tes penalaran & kemampuan akademik siswa (Data Real 0-100)'),
+                (3, 'C3', 'Akreditasi Jurusan & Kampus', 0.1500, 'benefit', 'Rating Akreditasi BAN-PT/LAM (5: Unggul/A, 4: Baik Sekali/B, 3: Baik/C, 2: Cukup, 1: Belum)'),
+                (4, 'C4', 'Minat & Asesmen Psikotes', 0.1500, 'benefit', 'Skor kecenderungan minat & kesesuaian bakat (Rating Skala 1-5)'),
+                (5, 'C5', 'Estimasi Biaya UKT per Semester', 0.1500, 'cost', 'Tingkat beban biaya UKT (Rating Cost 1: <2Jt, 2: 2-5Jt, 3: 5-8Jt, 4: 8-12Jt, 5: >12Jt)'),
+                (6, 'C6', 'Prospek Kerja & Daya Serap', 0.1000, 'benefit', 'Peluang karir & serapan kerja lulusan (Rating 1: Sangat Rendah s.d 5: Sangat Luas)')
+            ");
+        }
+
+        // Inisialisasi Sub-Kriteria jika kosong
+        $countSub = $pdo->query("SELECT COUNT(*) FROM `tb_sub_kriteria`")->fetchColumn();
+        if ($countSub == 0) {
+            $pdo->exec("INSERT INTO `tb_sub_kriteria` (`id_sub_kriteria`, `id_kriteria`, `nama_sub`, `nilai_bobot`) VALUES
+                (1, 3, 'Unggul / Akreditasi A', 5.00),
+                (2, 3, 'Baik Sekali / Akreditasi B', 4.00),
+                (3, 3, 'Baik / Akreditasi C', 3.00),
+                (4, 3, 'Akreditasi Minimum / Cukup', 2.00),
+                (5, 3, 'Belum Terakreditasi', 1.00),
+                (6, 4, 'Sangat Berminat & Sesuai Psikotes', 5.00),
+                (7, 4, 'Berminat & Sesuai', 4.00),
+                (8, 4, 'Cukup Berminat', 3.00),
+                (9, 4, 'Kurang Berminat', 2.00),
+                (10, 4, 'Tidak Berminat', 1.00),
+                (11, 5, 'Sangat Murah (< Rp 2.000.000 / sem)', 1.00),
+                (12, 5, 'Murah (Rp 2.000.000 - Rp 5.000.000)', 2.00),
+                (13, 5, 'Sedang (Rp 5.000.000 - Rp 8.000.000)', 3.00),
+                (14, 5, 'Mahal (Rp 8.000.000 - Rp 12.000.000)', 4.00),
+                (15, 5, 'Sangat Mahal (> Rp 12.000.000 / sem)', 5.00),
+                (16, 6, 'Sangat Luas & Tinggi (Daya Serap > 90%)', 5.00),
+                (17, 6, 'Luas & Tinggi (Daya Serap 75-90%)', 4.00),
+                (18, 6, 'Sedang / Cukup (Daya Serap 60-75%)', 3.00),
+                (19, 6, 'Rendah (Daya Serap < 60%)', 2.00),
+                (20, 6, 'Sangat Rendah', 1.00)
             ");
         }
 
@@ -211,15 +238,40 @@ function initDatabaseTables($pdo) {
         $countPenilaian = $pdo->query("SELECT COUNT(*) FROM `tb_penilaian`")->fetchColumn();
         if ($countPenilaian == 0) {
             $pdo->exec("INSERT INTO `tb_penilaian` (`id_user`, `id_alternatif`, `id_kriteria`, `nilai`) VALUES
-                (1, 1, 1, 88.00), (1, 1, 2, 82.00), (1, 1, 3, 85.00), (1, 1, 4, 90.00), (1, 1, 5, 75.00), (1, 1, 6, 95.00),
-                (1, 2, 1, 82.00), (1, 2, 2, 85.00), (1, 2, 3, 80.00), (1, 2, 4, 88.00), (1, 2, 5, 70.00), (1, 2, 6, 90.00),
-                (1, 3, 1, 92.00), (1, 3, 2, 88.00), (1, 3, 3, 90.00), (1, 3, 4, 85.00), (1, 3, 5, 95.00), (1, 3, 6, 98.00),
-                (1, 4, 1, 78.00), (1, 4, 2, 84.00), (1, 4, 3, 78.00), (1, 4, 4, 80.00), (1, 4, 5, 65.00), (1, 4, 6, 85.00),
-                (1, 5, 1, 70.00), (1, 5, 2, 86.00), (1, 5, 3, 75.00), (1, 5, 4, 82.00), (1, 5, 5, 60.00), (1, 5, 6, 80.00),
-                (1, 6, 1, 72.00), (1, 6, 2, 85.00), (1, 6, 3, 76.00), (1, 6, 4, 85.00), (1, 6, 5, 60.00), (1, 6, 6, 82.00),
-                (1, 7, 1, 68.00), (1, 7, 2, 80.00), (1, 7, 3, 72.00), (1, 7, 4, 95.00), (1, 7, 5, 80.00), (1, 7, 6, 88.00),
-                (1, 8, 1, 85.00), (1, 8, 2, 78.00), (1, 8, 3, 82.00), (1, 8, 4, 75.00), (1, 8, 5, 75.00), (1, 8, 6, 88.00)
+                (1, 1, 1, 88.50), (1, 1, 2, 85.00), (1, 1, 3, 5.00), (1, 1, 4, 5.00), (1, 1, 5, 3.00), (1, 1, 6, 5.00),
+                (1, 2, 1, 82.00), (1, 2, 2, 80.00), (1, 2, 3, 5.00), (1, 2, 4, 4.00), (1, 2, 5, 2.00), (1, 2, 6, 4.00),
+                (1, 3, 1, 95.00), (1, 3, 2, 92.00), (1, 3, 3, 5.00), (1, 3, 4, 5.00), (1, 3, 5, 5.00), (1, 3, 6, 5.00),
+                (1, 4, 1, 78.00), (1, 4, 2, 78.00), (1, 4, 3, 4.00), (1, 4, 4, 4.00), (1, 4, 5, 2.00), (1, 4, 6, 4.00),
+                (1, 5, 1, 72.00), (1, 5, 2, 75.00), (1, 5, 3, 4.00), (1, 5, 4, 4.00), (1, 5, 5, 2.00), (1, 5, 6, 4.00),
+                (1, 6, 1, 75.00), (1, 6, 2, 76.00), (1, 6, 3, 4.00), (1, 6, 4, 4.00), (1, 6, 5, 2.00), (1, 6, 6, 3.00),
+                (1, 7, 1, 70.00), (1, 7, 2, 72.00), (1, 7, 3, 3.00), (1, 7, 4, 5.00), (1, 7, 5, 3.00), (1, 7, 6, 4.00),
+                (1, 8, 1, 85.00), (1, 8, 2, 82.00), (1, 8, 3, 4.00), (1, 8, 4, 3.00), (1, 8, 5, 3.00), (1, 8, 6, 4.00)
             ");
+        }
+
+        // Auto-cleaning data yang memiliki entitas &amp; di database
+        for ($i = 0; $i < 3; $i++) {
+            $pdo->exec("UPDATE `tb_kriteria` SET `nama_kriteria` = REPLACE(`nama_kriteria`, '&amp;', '&'), `keterangan` = REPLACE(`keterangan`, '&amp;', '&') WHERE `nama_kriteria` LIKE '%&amp;%' OR `keterangan` LIKE '%&amp;%'");
+            $pdo->exec("UPDATE `tb_alternatif` SET `nama_jurusan` = REPLACE(`nama_jurusan`, '&amp;', '&'), `deskripsi` = REPLACE(`deskripsi`, '&amp;', '&'), `prospek_kerja` = REPLACE(`prospek_kerja`, '&amp;', '&') WHERE `nama_jurusan` LIKE '%&amp;%' OR `deskripsi` LIKE '%&amp;%' OR `prospek_kerja` LIKE '%&amp;%'");
+        }
+
+        // Auto-update keterangan & sub-kriteria untuk kriteria Tingkat Persaingan Masuk
+        $stmtC7 = $pdo->query("SELECT id_kriteria FROM `tb_kriteria` WHERE `nama_kriteria` LIKE '%Persaingan%' OR `kode_kriteria` = 'C7'");
+        $rowC7 = $stmtC7->fetch();
+        if ($rowC7) {
+            $idC7 = (int)$rowC7['id_kriteria'];
+            $pdo->exec("UPDATE `tb_kriteria` SET `keterangan` = 'Tingkat keketatan persaingan pendaftar (Rating Cost 1: <1:5 s.d 5: >1:50)' WHERE `id_kriteria` = {$idC7} AND (`keterangan` IS NULL OR `keterangan` = '')");
+
+            $countSubC7 = $pdo->query("SELECT COUNT(*) FROM `tb_sub_kriteria` WHERE `id_kriteria` = {$idC7}")->fetchColumn();
+            if ($countSubC7 == 0) {
+                $pdo->exec("INSERT INTO `tb_sub_kriteria` (`id_kriteria`, `nama_sub`, `nilai_bobot`) VALUES
+                    ({$idC7}, 'Sangat Tinggi / Ketat Sekali (Rasio > 1:50)', 5.00),
+                    ({$idC7}, 'Tinggi (Rasio 1:20 - 1:50)', 4.00),
+                    ({$idC7}, 'Sedang (Rasio 1:10 - 1:20)', 3.00),
+                    ({$idC7}, 'Rendah (Rasio 1:5 - 1:10)', 2.00),
+                    ({$idC7}, 'Sangat Rendah (Rasio < 1:5)', 1.00)
+                ");
+            }
         }
     } catch (PDOException $e) {
         error_log("Init Table Exception: " . $e->getMessage());
